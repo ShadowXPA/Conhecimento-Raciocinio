@@ -10,7 +10,7 @@ function a()
     numFiles = length(files);
     resolution = 21;
     
-    images = zeros(21, 21, numFiles, 'uint8');
+    images = zeros(resolution, resolution, numFiles, 'uint8');
     for i = 1 : numFiles
         image = imread(strcat(files(i).folder, '\', files(i).name));
         image = imresize(image, [resolution resolution]);
