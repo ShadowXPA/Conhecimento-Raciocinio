@@ -3,7 +3,10 @@ clear;
 close all;
 
 % a();
-b();
+% b();
+% c();
+% d();
+alineaE();
 end
 
 function a()
@@ -56,12 +59,10 @@ transferFcns = [{'logsig'},...
     {'tansig'}];
 
 %'trainbfg',...
-trainFcns = [{'traingd'},...
-    {'traingdx'},...
+trainFcns = [{'traingdx'},...
     {'trainlm'}];
 
 divideFcns = [{'dividerand'},...
-    {'divideblock'},...
     {'divideint'}];
 
 divideParams = [{[0.7 0.15 0.15]},...
@@ -104,7 +105,6 @@ for lay = 1 : sizeOfLayers
                     [net, tr] = train(net, imageInput, imageTarget);
                     
                     % Simular
-                    %     [imageInput, imageTarget] = GetImages('Pasta1/*.jpg', '%d');
                     y = sim(net, imageInput);
                     
                     accuracy = CalculateAccuracy(y, imageTarget);
@@ -121,4 +121,102 @@ for lay = 1 : sizeOfLayers
         end
     end
 end
+end
+
+function c()
+% Carregar imagens
+[imageInput1, imageTarget1] = GetImages('Pasta1/*.jpg', '%d', 0);
+[imageInput2, imageTarget2] = GetImages('Pasta2/*.jpg', 'letter_bnw_%d', 1);
+[imageInput3, imageTarget3] = GetImages('Pasta3/*.jpg', 'letter_bnw_test_%d', 0);
+
+% load("RedesGravadas/bestNetworkB.mat", 'net', 'accuracy', 'accuracyTest');
+load("RedesGravadas/bestNetworkB 10 tansig traingdx divideint 0.8 0.1 0.1 .mat", 'net', 'accuracy', 'accuracyTest');
+% load("RedesGravadas/bestNetworkB 10 tansig traingdx dividerand 0.8 0.1 0.1 .mat", 'net', 'accuracy', 'accuracyTest');
+fprintf('Carregada a rede neuronal com %f de precisão total e %f de precisão de teste.\n', accuracy, accuracyTest);
+
+% Sem treinar a rede verifique se a classificação dada pela RN é correta.
+% Apresente os resultados obtidos. 
+
+% Simular
+y = sim(net, imageInput3);
+
+accuracy = CalculateAccuracy(y, imageTarget3);
+fprintf('\nPrecisão total: %f\n', accuracy);
+
+% -------------------------------------------------------------------------
+
+% Agora volte a treinar a rede só com os exemplos da Pasta_3.
+% Teste a rede separadamente para as imagens da Pasta_1, Pasta_2 e Pasta_3.
+% Compare e registe os resultados obtidos em cada caso.
+
+fprintf('\nTreinar a rede com imagens da Pasta_3\n');
+
+[netTreinada, ~] = train(net, imageInput3, imageTarget3);
+
+% Simular Pasta_1
+y = sim(netTreinada, imageInput1);
+
+accuracy = CalculateAccuracy(y, imageTarget1);
+fprintf('\nPrecisão total Pasta_1: %f\n', accuracy);
+
+% Simular Pasta_2
+y = sim(netTreinada, imageInput2);
+
+accuracy = CalculateAccuracy(y, imageTarget2);
+fprintf('\nPrecisão total Pasta_2: %f\n', accuracy);
+
+% Simular Pasta_3
+y = sim(netTreinada, imageInput3);
+
+accuracy = CalculateAccuracy(y, imageTarget3);
+fprintf('\nPrecisão total Pasta_3: %f\n', accuracy);
+
+% -------------------------------------------------------------------------
+
+% Volte a treinar a rede com todas as imagens fornecidas (Pasta1 + Pasta_2 + Pasta_3).
+% Teste a rede para as imagens da Pasta_1, Pasta_2 e Pasta_3 em separado.
+% Compare e registe os resultados obtidos.
+
+fprintf('\nTreinar a rede com imagens da (Pasta1 + Pasta_2 + Pasta_3)\n');
+
+[netTreinada, ~] = train(net, imageInput1, imageTarget1);
+[netTreinada, ~] = train(netTreinada, imageInput2, imageTarget2);
+[netTreinada, ~] = train(netTreinada, imageInput3, imageTarget3);
+
+% Simular Pasta_1
+y = sim(netTreinada, imageInput1);
+
+accuracy = CalculateAccuracy(y, imageTarget1);
+fprintf('\nPrecisão total Pasta_1: %f\n', accuracy);
+
+% Simular Pasta_2
+y = sim(netTreinada, imageInput2);
+
+accuracy = CalculateAccuracy(y, imageTarget2);
+fprintf('\nPrecisão total Pasta_2: %f\n', accuracy);
+
+% Simular Pasta_3
+y = sim(netTreinada, imageInput3);
+
+accuracy = CalculateAccuracy(y, imageTarget3);
+fprintf('\nPrecisão total Pasta_3: %f\n', accuracy);
+
+% -------------------------------------------------------------------------
+
+end
+
+function d()
+% Carregar imagens
+[imageInput, imageTarget] = GetImages('PastaC/*.jpg', '%d', 0);
+
+load("RedesGravadas/bestNetworkB.mat", 'net', 'accuracy', 'accuracyTest');
+% load("RedesGravadas/bestNetworkB 10 tansig traingdx divideint 0.8 0.1 0.1 .mat", 'net', 'accuracy', 'accuracyTest');
+% load("RedesGravadas/bestNetworkB 10 tansig traingdx dividerand 0.8 0.1 0.1 .mat", 'net', 'accuracy', 'accuracyTest');
+% load("RedesGravadas/bestNetworkB 10 tansig trainlm dividerand 0.8 0.1 0.1 .mat", 'net', 'accuracy', 'accuracyTest');
+
+% Simular
+y = sim(net, imageInput);
+
+accuracy = CalculateAccuracy(y, imageTarget);
+fprintf('\nPrecisão total: %f\n', accuracy);
 end

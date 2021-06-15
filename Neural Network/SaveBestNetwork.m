@@ -4,7 +4,7 @@ if (exist(fileName, 'file'))
     accuracyNew = accuracy;
     accuracyTestNew = accuracyTest;
     load(fileName, 'net', 'accuracy', 'accuracyTest');
-    if (accuracyNew > accuracy)
+    if (accuracyNew >= accuracy && accuracyTestNew > accuracyTest)
         net = netNew;
         accuracy = accuracyNew;
         accuracyTest = accuracyTestNew;
