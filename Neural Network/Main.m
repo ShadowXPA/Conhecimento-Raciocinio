@@ -4,8 +4,8 @@ close all;
 
 % a();
 % b();
-c();
-% d();
+% c();
+d();
 % alineaE();
 end
 
