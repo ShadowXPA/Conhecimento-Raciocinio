@@ -4,9 +4,9 @@ close all;
 
 % a();
 % b();
-% c();
+c();
 % d();
-alineaE();
+% alineaE();
 end
 
 function a()
@@ -130,8 +130,8 @@ function c()
 [imageInput3, imageTarget3] = GetImages('Pasta3/*.jpg', 'letter_bnw_test_%d', 0);
 
 % load("RedesGravadas/bestNetworkB.mat", 'net', 'accuracy', 'accuracyTest');
-load("RedesGravadas/bestNetworkB 10 tansig traingdx divideint 0.8 0.1 0.1 .mat", 'net', 'accuracy', 'accuracyTest');
-% load("RedesGravadas/bestNetworkB 10 tansig traingdx dividerand 0.8 0.1 0.1 .mat", 'net', 'accuracy', 'accuracyTest');
+% load("RedesGravadas/bestNetworkB 10 tansig traingdx divideint 0.8 0.1 0.1 .mat", 'net', 'accuracy', 'accuracyTest');
+load("RedesGravadas/bestNetworkB 10 tansig traingdx dividerand 0.8 0.1 0.1 .mat", 'net', 'accuracy', 'accuracyTest');
 fprintf('Carregada a rede neuronal com %f de precisão total e %f de precisão de teste.\n', accuracy, accuracyTest);
 
 % Sem treinar a rede verifique se a classificação dada pela RN é correta.
@@ -179,9 +179,10 @@ fprintf('\nPrecisão total Pasta_3: %f\n', accuracy);
 
 fprintf('\nTreinar a rede com imagens da (Pasta1 + Pasta_2 + Pasta_3)\n');
 
-[netTreinada, ~] = train(net, imageInput1, imageTarget1);
-[netTreinada, ~] = train(netTreinada, imageInput2, imageTarget2);
-[netTreinada, ~] = train(netTreinada, imageInput3, imageTarget3);
+imageInput = [imageInput1 imageInput2 imageInput3];
+imageTarget = [imageTarget1 imageTarget2 imageTarget3];
+
+[netTreinada, ~] = train(net, imageInput, imageTarget);
 
 % Simular Pasta_1
 y = sim(netTreinada, imageInput1);
