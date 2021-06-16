@@ -5,8 +5,8 @@ close all;
 % a();
 % b();
 % c();
-d();
-% alineaE();
+% d();
+alineaE();
 end
 
 function a()
@@ -18,16 +18,19 @@ function a()
 net = feedforwardnet([10]);
 
 % Função de ativação
-net.layers{2}.transferFcn = 'tansig';
+net.layers{2}.transferFcn = 'purelin';
 
 % Função de treino
-net.trainFcn = 'traingdx';
+net.trainFcn = 'trainlm';
 
 % Número de épocas
 net.trainParam.epochs = 1000;
 
 %
 net.divideFcn = '';
+% net.divideParam.trainRatio = 0.8;
+% net.divideParam.valRatio = 0.1;
+% net.divideParam.testRatio = 0.1;
 
 % Treino
 [net, tr] = train(net, imageInput, imageTarget);
@@ -135,7 +138,7 @@ load("RedesGravadas/bestNetworkB 10 tansig traingdx dividerand 0.8 0.1 0.1 .mat"
 fprintf('Carregada a rede neuronal com %f de precisão total e %f de precisão de teste.\n', accuracy, accuracyTest);
 
 % Sem treinar a rede verifique se a classificação dada pela RN é correta.
-% Apresente os resultados obtidos. 
+% Apresente os resultados obtidos.
 
 % Simular
 y = sim(net, imageInput3);
@@ -210,10 +213,10 @@ function d()
 % Carregar imagens
 [imageInput, imageTarget] = GetImages('PastaC/*.jpg', '%d', 0);
 
-load("RedesGravadas/bestNetworkB.mat", 'net', 'accuracy', 'accuracyTest');
+% load("RedesGravadas/bestNetworkB.mat", 'net', 'accuracy', 'accuracyTest');
 % load("RedesGravadas/bestNetworkB 10 tansig traingdx divideint 0.8 0.1 0.1 .mat", 'net', 'accuracy', 'accuracyTest');
 % load("RedesGravadas/bestNetworkB 10 tansig traingdx dividerand 0.8 0.1 0.1 .mat", 'net', 'accuracy', 'accuracyTest');
-% load("RedesGravadas/bestNetworkB 10 tansig trainlm dividerand 0.8 0.1 0.1 .mat", 'net', 'accuracy', 'accuracyTest');
+load("RedesGravadas/bestNetworkB 10 tansig trainlm dividerand 0.8 0.1 0.1 .mat", 'net', 'accuracy', 'accuracyTest');
 
 % Simular
 y = sim(net, imageInput);

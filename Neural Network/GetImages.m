@@ -28,6 +28,9 @@ imageInput = zeros(resolution * resolution, numFiles);
 imageTarget = zeros(numImageTypes, numFiles);
 for i = 1 : numFiles
     image = imread(strcat(files(i).folder, '\', fileNames2(i)));
+    if (size(image, 3) > 1)
+        image = rgb2gray(image);
+    end
     image = imresize(image, [resolution resolution]);
     imageInput(:,i) = image(:);
     j = floor((i - 1) / numFilesPerType) + 1;
