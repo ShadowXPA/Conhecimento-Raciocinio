@@ -5,8 +5,8 @@ close all;
 % a();
 % b();
 % c();
-% d();
-alineaE();
+d();
+% alineaE();
 end
 
 function a()
@@ -132,9 +132,9 @@ function c()
 [imageInput2, imageTarget2] = GetImages('Pasta2/*.jpg', 'letter_bnw_%d', 1);
 [imageInput3, imageTarget3] = GetImages('Pasta3/*.jpg', 'letter_bnw_test_%d', 0);
 
-% load("RedesGravadas/bestNetworkB.mat", 'net', 'accuracy', 'accuracyTest');
+load("RedesGravadas/bestNetworkB.mat", 'net', 'accuracy', 'accuracyTest');
 % load("RedesGravadas/bestNetworkB 10 tansig traingdx divideint 0.8 0.1 0.1 .mat", 'net', 'accuracy', 'accuracyTest');
-load("RedesGravadas/bestNetworkB 10 tansig traingdx dividerand 0.8 0.1 0.1 .mat", 'net', 'accuracy', 'accuracyTest');
+% load("RedesGravadas/bestNetworkB 10 tansig traingdx dividerand 0.8 0.1 0.1 .mat", 'net', 'accuracy', 'accuracyTest');
 fprintf('Carregada a rede neuronal com %f de precisão total e %f de precisão de teste.\n', accuracy, accuracyTest);
 
 % Sem treinar a rede verifique se a classificação dada pela RN é correta.
@@ -205,6 +205,10 @@ y = sim(netTreinada, imageInput3);
 accuracy = CalculateAccuracy(y, imageTarget3);
 fprintf('\nPrecisão total Pasta_3: %f\n', accuracy);
 
+net = netTreinada;
+
+save("RedesGravadas/bestNetworkC.mat", 'net');
+
 % -------------------------------------------------------------------------
 
 end
@@ -213,10 +217,11 @@ function d()
 % Carregar imagens
 [imageInput, imageTarget] = GetImages('PastaC/*.jpg', '%d', 0);
 
-% load("RedesGravadas/bestNetworkB.mat", 'net', 'accuracy', 'accuracyTest');
-% load("RedesGravadas/bestNetworkB 10 tansig traingdx divideint 0.8 0.1 0.1 .mat", 'net', 'accuracy', 'accuracyTest');
-% load("RedesGravadas/bestNetworkB 10 tansig traingdx dividerand 0.8 0.1 0.1 .mat", 'net', 'accuracy', 'accuracyTest');
-load("RedesGravadas/bestNetworkB 10 tansig trainlm dividerand 0.8 0.1 0.1 .mat", 'net', 'accuracy', 'accuracyTest');
+% load("RedesGravadas/bestNetworkC.mat", 'net');
+% load("RedesGravadas/bestNetworkB.mat", 'net');
+% load("RedesGravadas/bestNetworkB 10 tansig traingdx divideint 0.8 0.1 0.1 .mat", 'net');
+% load("RedesGravadas/bestNetworkB 10 tansig traingdx dividerand 0.8 0.1 0.1 .mat", 'net');
+load("RedesGravadas/bestNetworkB 10 tansig trainlm dividerand 0.8 0.1 0.1 .mat", 'net');
 
 % Simular
 y = sim(net, imageInput);
